@@ -1,24 +1,62 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Data Lokasi</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+        }
+
+        #map {
+            height: 400px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
 <body>
 
-<h2>Data Lokasi</h2>
+<h2>📍 Data Lokasi</h2>
+
 <div id="data"></div>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 
 const id = params.get("id");
-const lat = params.get("lat");
-const lon = params.get("lon");
+const lat = parseFloat(params.get("lat"));
+const lon = parseFloat(params.get("lon"));
 const waktu = params.get("waktu");
 
+// tampilkan data
 document.getElementById("data").innerHTML = `
 ID: ${id} <br><br>
 📍 Latitude: ${lat} <br>
 📍 Longitude: ${lon} <br><br>
 🕒 ${waktu}
 `;
+
+// buat map
+var map = L.map('map').setView([lat, lon], 15);
+
+// layer peta
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+}).addTo(map);
+
+// marker
+L.marker([lat, lon]).addTo(map)
+    .bindPopup("Lokasi ditemukan")
+    .openPopup();
 </script>
 
 </body>
