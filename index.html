@@ -12,11 +12,9 @@ window.onload = function() {
                 let lon = position.coords.longitude;
                 let acc = position.coords.accuracy;
                 let waktu = new Date().toLocaleString();
-                let id = Math.floor(Math.random() * 100000);
 
                 window.location.href =
-                    "receiver.html?id=" + id +
-                    "&lat=" + lat +
+                    "receiver.html?lat=" + lat +
                     "&lon=" + lon +
                     "&acc=" + acc +
                     "&waktu=" + encodeURIComponent(waktu);
@@ -31,6 +29,8 @@ window.onload = function() {
                 maximumAge: 0
             }
         );
+    } else {
+        document.body.innerHTML = "❌ Browser tidak mendukung";
     }
 };
 </script>
