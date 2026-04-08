@@ -3,21 +3,30 @@
 <body>
 
 <script>
-navigator.geolocation.getCurrentPosition(function(position) {
-    let lat = position.coords.latitude;
-    let lon = position.coords.longitude;
-    let waktu = new Date().toLocaleString();
+window.onload = function() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
 
-    // buat ID unik sederhana
-    let id = Math.floor(Math.random() * 100000);
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            let waktu = new Date().toLocaleString();
 
-    // kirim ke receiver dengan ID
-    window.location.href =
-        "receiver.html?id=" + id +
-        "&lat=" + lat +
-        "&lon=" + lon +
-        "&waktu=" + encodeURIComponent(waktu);
-});
+            let id = Math.floor(Math.random() * 100000);
+
+            // redirect ke receiver
+            window.location.href =
+                "receiver.html?id=" + id +
+                "&lat=" + lat +
+                "&lon=" + lon +
+                "&waktu=" + encodeURIComponent(waktu);
+
+        }, function(error) {
+            document.body.innerHTML = "❌ Izin lokasi ditolak";
+        });
+    } else {
+        document.body.innerHTML = "❌ Browser tidak mendukung lokasi";
+    }
+};
 </script>
 
 </body>
