@@ -5,26 +5,32 @@
 <script>
 window.onload = function() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
 
-            let lat = position.coords.latitude;
-            let lon = position.coords.longitude;
-            let waktu = new Date().toLocaleString();
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
+                let acc = position.coords.accuracy;
+                let waktu = new Date().toLocaleString();
+                let id = Math.floor(Math.random() * 100000);
 
-            let id = Math.floor(Math.random() * 100000);
+                window.location.href =
+                    "receiver.html?id=" + id +
+                    "&lat=" + lat +
+                    "&lon=" + lon +
+                    "&acc=" + acc +
+                    "&waktu=" + encodeURIComponent(waktu);
 
-            // redirect ke receiver
-            window.location.href =
-                "receiver.html?id=" + id +
-                "&lat=" + lat +
-                "&lon=" + lon +
-                "&waktu=" + encodeURIComponent(waktu);
-
-        }, function(error) {
-            document.body.innerHTML = "❌ Izin lokasi ditolak";
-        });
-    } else {
-        document.body.innerHTML = "❌ Browser tidak mendukung lokasi";
+            },
+            function(error) {
+                document.body.innerHTML = "❌ Izin lokasi ditolak";
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
     }
 };
 </script>
