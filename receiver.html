@@ -14,38 +14,43 @@
 
 <h2>📍 Data Lokasi</h2>
 
-<div id="data">Loading...</div>
+<div id="data">🔎 Mengambil data...</div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 
 const lat = params.get("lat");
 const lon = params.get("lon");
-const acc = params.get("acc");
-const waktu = params.get("waktu");
+const acc = params.get("acc") || "Tidak tersedia";
+const waktu = params.get("waktu") || "Tidak tersedia";
 
-// tampilkan data awal
+// tampilkan dulu data dasar
 document.getElementById("data").innerHTML = `
-📍 Latitude: ${lat} <br>
-📍 Longitude: ${lon} <br>
+📍 Latitude: ${lat || "Tidak ada"} <br>
+📍 Longitude: ${lon || "Tidak ada"} <br>
 🎯 Akurasi: ± ${acc} meter <br><br>
 🕒 ${waktu} <br><br>
 🔎 Mencari alamat...
 `;
 
-// ambil alamat (opsional)
-fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
-.then(res => res.json())
-.then(data => {
-    let alamat = data.display_name;
+// ambil alamat dari OpenStreetMap
+if (lat && lon) {
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+    .then(res => res.json())
+    .then(data => {
 
-    document.getElementById("data").innerHTML += `
-    <br><br>🏠 ${alamat}
-    `;
-})
-.catch(() => {
-    document.getElementById("data").innerHTML += "<br><br>❌ Gagal ambil alamat";
-});
+        let alamat = data.display_name || "Alamat tidak ditemukan";
+
+        document.getElementById("data").innerHTML += `
+        <br><br>🏠 ${alamat}
+        `;
+    })
+    .catch(() => {
+        document.getElementById("data").innerHTML += "<br><br>❌ Gagal ambil alamat";
+    });
+} else {
+    document.getElementById("data").innerHTML += "<br><br>❌ Koordinat tidak valid";
+}
 </script>
 
 </body>
