@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Data Lokasi</h2>
+<div id="data"></div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+
+const id = params.get("id");
+const lat = params.get("lat");
+const lon = params.get("lon");
+const waktu = params.get("waktu");
+
+document.getElementById("data").innerHTML = `
+ID: ${id} <br><br>
+📍 Latitude: ${lat} <br>
+📍 Longitude: ${lon} <br><br>
+🕒 ${waktu}
+`;
+</script>
+
+</body>
+</html>
